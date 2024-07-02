@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
+import Header from "./_components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,52 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className}`}>
-        <header className="fixed top-0 left-0 right-0 h-32 flex justify-between align-items">
-          <span>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-          <nav className="flex">
-            <ul className="flex">
-              <li>
-                <a href="/">Hem</a>
-              </li>
-              <li>
-                <a href="/about">Uppdrag</a>
-              </li>
-              <li>
-                <a href="/about">Konsulter</a>
-              </li>
-              <li>
-                <a href="/about">Om Oss</a>
-              </li>
-              <li>
-                <a href="/about">Kontakta oss</a>
-              </li>
-            </ul>
-          </nav>
-          <nav className="flex">
-            <ul className="flex">
-              <li>
-                <a href="/login">Logga in</a>
-              </li>
-            </ul>
-            <ul>
-              <li>
-                <a href="/register">Registrera</a>
-              </li>
-            </ul>
-            <ul>
-              <li>
-                <a href="/profile">Profil</a>
-              </li>
-            </ul>
-          </nav>
-        </header>
-      
-
+        <Header />
         {children}
-        
-        </body>
+      </body>
     </html>
   );
 }
