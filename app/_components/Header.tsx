@@ -3,7 +3,9 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useRef, useState } from "react";
+import { ModeToggle } from "./Themes/IconButton";
+import { useMotionValueEvent, useScroll, motion } from "framer-motion";
 const links = [
   {
     name: "Hem",
@@ -27,9 +29,54 @@ const links = [
   },
 ];
 export default function Header() {
+  const [isHidden, setIsHidden] = useState(false);
+
+  const { scrollY } = useScroll();
+
+  const lastYRef = useRef(0);
+
+
+  useMotionValueEvent(scrollY, "change", (y) => {
+
+    const difference = y - lastYRef.current;
+
+    if (Math.abs(difference) > 50) {
+
+      setIsHidden(difference > 0);
+
+
+      lastYRef.current = y;
+
+    }
+
+  });
   const pathname = usePathname();
   return (
-    <header className="fixed z-10 top-0 left-0 right-0  container h-20">
+    <motion.header 
+    animate={isHidden ? "hidden" : "visible"}
+
+    whileHover="visible"
+
+    onFocusCapture={() => setIsHidden(false)}
+
+    variants={{
+
+      hidden: {
+
+        y: "-90%",
+
+      },
+
+      visible: {
+
+        y: "0%",
+
+      },
+
+    }}
+
+    transition={{ duration: 0.2 }}
+    className={`fixed z-10 top-0 left-0 right-0  container h-20 ${isHidden ? "bg-white" : "bg-transparent"}`}>
       <div className="flex justify-between align-items h-full uppercase text-sm">
         <svg
           width="253"
@@ -139,7 +186,7 @@ export default function Header() {
         <nav className="flex  gap-4 items-center">
           <ul className="flex  items-center gap-4">
             <li>
-                <span>icon</span>
+                <ModeToggle />
             </li>
             <li>
               <Button>Logga in</Button>
@@ -159,6 +206,6 @@ export default function Header() {
           )}
         </nav>
       </div>
-    </header>
+    </motion.header>
   );
 }
